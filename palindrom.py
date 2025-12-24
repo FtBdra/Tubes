@@ -2,7 +2,7 @@ import streamlit as st
 import time
 import tracemalloc
 import re
-import pandas as pd
+import matplotlib.pyplot as plt
 
 def normalize(text):
     return re.sub(r'[^a-z0-9]', '', text.lower())
@@ -79,35 +79,26 @@ if st.button("Analisis"):
             st.write("Memori Maks:", f"{recursive['memory']:.2f} KB")
             
         
-st.markdown("## Grafik Perbandingan Kompleksitas")
+st.markdown("## Perbandingan Waktu Eksekusi")
+fig_time, ax_time = plt.subplots()
+algorithms = ["Iteratif", "Rekursif"]
+times = [iterative["time"], recursive["time"]]
+ax_time.bar(algorithms, times)
+ax_time.set_ylabel("Waktu Eksekusi (detik)")
+ax_time.set_xlabel("Algoritma")
+ax_time.set_ylim(bottom=0)
+ax_time.set_title("Perbandingan Waktu Eksekusi Algoritma Palindrom")
+st.pyplot(fig_time)
 
-# DataFrame untuk waktu
-df_time = pd.DataFrame({
-    "Algoritma": ["Iteratif", "Rekursif"],
-    "Waktu Eksekusi (detik)": [
-        iterative["time"],
-        recursive["time"]
-    ]
-})
-
-# DataFrame untuk memori
-df_memory = pd.DataFrame({
-    "Algoritma": ["Iteratif", "Rekursif"],
-    "Penggunaan Memori (KB)": [
-        iterative["memory"],
-        recursive["memory"]
-    ]
-})
-
-st.markdown("### Perbandingan Waktu Eksekusi")
-st.line_chart(
-    df_time.set_index("Algoritma")
-)
-
-st.markdown("### Perbandingan Penggunaan Memori")
-st.line_chart(
-    df_memory.set_index("Algoritma")
-)
+st.markdown("## Perbandingan Penggunaan Memori")
+fig_mem, ax_mem = plt.subplots()
+memories = [iterative["memory"], recursive["memory"]]
+ax_mem.bar(algorithms, memories)
+ax_mem.set_ylabel("Penggunaan Memori (KB)")
+ax_mem.set_xlabel("Algoritma")
+ax_mem.set_ylim(bottom=0)
+ax_mem.set_title("Perbandingan Penggunaan Memori Algoritma Palindrom")
+st.pyplot(fig_mem)
 
 st.markdown("---")
 st.markdown("## Analisis Teoritis")
