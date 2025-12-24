@@ -53,9 +53,16 @@ if st.button("Analisis"):
         )
 
         st.subheader("Hasil Verifikasi")
-        st.write("Iteratif:", it_res)
-        st.write("Rekursif:", rec_res)
-
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("Iteratif:", it_res)
+            st.write("Waktu Eksekusi:", f"{iterative['time']:.6f} detik")
+            st.write("Memori Maks:", f"{iterative['memory']:.2f} KB")
+        with col2:
+            st.write("Rekursif:", rec_res)
+            st.write("Waktu Eksekusi:", f"{recursive['time']:.6f} detik")
+            st.write("Memori Maks:", f"{recursive['memory']:.2f} KB")
+        
         st.subheader("Perbandingan Waktu Eksekusi")
         fig1, ax1 = plt.subplots()
         ax1.bar(["Iteratif", "Rekursif"], [it_time, rec_time])
