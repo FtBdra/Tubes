@@ -2,6 +2,7 @@ import streamlit as st
 import time
 import tracemalloc
 import re
+import pandas as pd
 
 def normalize(text):
     return re.sub(r'[^a-z0-9]', '', text.lower())
@@ -77,12 +78,36 @@ if st.button("Analisis"):
             st.write("Waktu Eksekusi:", f"{recursive['time']:.6f} detik")
             st.write("Memori Maks:", f"{recursive['memory']:.2f} KB")
             
-        st.markdown("## Perbandingan Kompleksitas")
-        st.bar_chart({
-            "Iteratif": [iterative["time"], iterative["memory"]],
-            "Rekursif": [recursive["time"], recursive["memory"]]
-        }, horizontal=False)
-        st.caption("Baris 1: Waktu Eksekusi | Baris 2: Penggunaan Memori (KB)")
+        
+st.markdown("## Grafik Perbandingan Kompleksitas")
+
+# DataFrame untuk waktu
+df_time = pd.DataFrame({
+    "Algoritma": ["Iteratif", "Rekursif"],
+    "Waktu Eksekusi (detik)": [
+        iterative["time"],
+        recursive["time"]
+    ]
+})
+
+# DataFrame untuk memori
+df_memory = pd.DataFrame({
+    "Algoritma": ["Iteratif", "Rekursif"],
+    "Penggunaan Memori (KB)": [
+        iterative["memory"],
+        recursive["memory"]
+    ]
+})
+
+st.markdown("### Perbandingan Waktu Eksekusi")
+st.line_chart(
+    df_time.set_index("Algoritma")
+)
+
+st.markdown("### Perbandingan Penggunaan Memori")
+st.line_chart(
+    df_memory.set_index("Algoritma")
+)
 
 st.markdown("---")
 st.markdown("## Analisis Teoritis")
