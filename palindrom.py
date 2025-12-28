@@ -8,7 +8,8 @@ def normalize(text):
     return re.sub(r'[^a-z0-9]', '', text.lower())
 
 def is_palindrome_iterative(text):
-    left, right = 0, len(text) - 1
+    left = 0
+    right = len(text) - 1
     while left < right:
         if text[left] != text[right]:
             return False
@@ -17,7 +18,7 @@ def is_palindrome_iterative(text):
     return True
 
 def is_palindrome_recursive(text, left, right):
-    if left >= right:
+    if left == right:
         return True
     if text[left] != text[right]:
         return False
@@ -34,7 +35,7 @@ def analyze_algorithm(func, *args):
     return result, end - start, peak / 1024
 
 st.set_page_config(page_title="Analisis Palindrom", layout="centered")
-st.title("Analisis Kompleksitas Algoritma Palindrom")
+st.title("Analisis Kompleksitas Algoritma Verifikasi Palindrom pada Kalimat")
 
 text = st.text_area("Masukkan Kalimat")
 
@@ -43,28 +44,24 @@ if st.button("Analisis"):
         st.warning("Input tidak boleh kosong")
     else:
         clean = normalize(text)
-
         it_res, it_time, it_mem = analyze_algorithm(
             is_palindrome_iterative, clean
         )
-
         rec_res, rec_time, rec_mem = analyze_algorithm(
             is_palindrome_recursive, clean, 0, len(clean) - 1
         )
-
         st.subheader("Hasil Verifikasi")
         col1, col2 = st.columns(2)
         with col1:
             st.write("Iteratif")
             st.write("Palindrom:", it_res)
             st.write("Waktu Eksekusi:", f"{it_time:.6f} detik")
-            st.write("Memori Maks:", f"{it_mem:.2f} KB")
+            st.write("Penggunaan Maks:", f"{it_mem:.6f} KB")
         with col2:
             st.write("Rekursif")
             st.write("Palindrom:", rec_res)
             st.write("Waktu Eksekusi:", f"{rec_time:.6f} detik")
-            st.write("Memori Maks:", f"{rec_mem:.2f} KB")
-
+            st.write("Penggunaan Memori:", f"{rec_mem:.6f} KB")
         
         st.subheader("Perbandingan Waktu Eksekusi")
         fig1, ax1 = plt.subplots()
@@ -79,22 +76,4 @@ if st.button("Analisis"):
         ax2.set_ylabel("Memori (KB)")
         ax2.set_ylim(bottom=0)
         st.pyplot(fig2)
-
 st.markdown("---")
-st.markdown("## Analisis Teoritis")
-
-st.markdown("""
-**Algoritma Iteratif**
-- Kompleksitas waktu: **O(n)**
-- Kompleksitas memori: **O(1)**
-- Lebih efisien untuk input besar
-
-**Algoritma Rekursif**
-- Kompleksitas waktu: **O(n)**
-- Kompleksitas memori: **O(n)** (call stack)
-- Lebih elegan namun berisiko stack overflow
-
-### Kesimpulan:
-**Iteratif lebih unggul dalam efisiensi memori**,  
-**Rekursif unggul dari sisi keterbacaan kode**.
-""")
