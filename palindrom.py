@@ -18,7 +18,7 @@ def is_palindrome_iterative(text):
     return True
 
 def is_palindrome_recursive(text, left, right):
-    if left == right:
+    if left >= right:
         return True
     if text[left] != text[right]:
         return False
