@@ -44,6 +44,10 @@ if st.button("Analisis"):
         st.warning("Input tidak boleh kosong")
     else:
         clean = normalize(text)
+        if clean == "":
+            st.warning("Input tidak boleh kosong")
+            st.stop()
+            
         it_res, it_time, it_mem = analyze_algorithm(
             is_palindrome_iterative, clean
         )
