@@ -47,11 +47,14 @@ if st.button("Analisis"):
         it_res, it_time, it_mem = analyze_algorithm(
             is_palindrome_iterative, clean
         )
+        
         rec_res, rec_time, rec_mem = analyze_algorithm(
             is_palindrome_recursive, clean, 0, len(clean) - 1
         )
+        
         st.subheader("Hasil Verifikasi")
         col1, col2 = st.columns(2)
+        
         with col1:
             st.write("Iteratif")
             st.write("Palindrom:", it_res)
